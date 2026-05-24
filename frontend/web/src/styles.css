@@ -497,7 +497,7 @@ button:focus-visible {
 
 /* Show only two gap suggestion cards by default; allow scrolling for the rest */
 .gap-list {
-  max-height: 300px;
+  max-height: 350px;
   overflow-y: auto;
   padding-right: 6px; /* room for scrollbar */
 }
