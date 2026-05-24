@@ -183,11 +183,43 @@ button {
   margin-bottom: 0;
 }
 
+.panel-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.generate-button {
+  min-width: 170px;
+}
+
 .lower-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
   gap: 22px;
   margin-top: 22px;
+}
+
+.insight-column {
+  display: grid;
+  grid-template-rows: minmax(0, 3fr) minmax(140px, 1fr);
+  gap: 22px;
+  min-height: 0;
+}
+
+.insight-main,
+.insight-side {
+  min-height: 0;
+}
+
+.insight-main .surface-card,
+.insight-side .surface-card {
+  height: 100%;
+}
+
+.history-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .surface-card,
@@ -275,7 +307,7 @@ textarea {
 }
 
 .spec-group textarea {
-  min-height: 320px;
+  min-height: 190px;
 }
 
 select:focus,

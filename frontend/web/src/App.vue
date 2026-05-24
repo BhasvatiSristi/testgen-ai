@@ -7,6 +7,8 @@
         <SourcePanel
           v-model:inputType="state.inputType"
           v-model:rawContent="state.rawContent"
+          :loading="state.loading"
+          @generate="generate"
         />
       </aside>
 
@@ -26,7 +28,12 @@
       </div>
 
       <aside class="insight-column">
-        <CoveragePanel :coverage="state.coverage" :coverageGaps="state.coverageGaps" @generate-gap="handleGapGeneration" />
+        <div class="insight-main">
+          <CoveragePanel :coverage="state.coverage" :coverageGaps="state.coverageGaps" @generate-gap="handleGapGeneration" />
+        </div>
+        <div class="insight-side">
+          <HistoryPanel />
+        </div>
       </aside>
     </section>
 
@@ -50,6 +57,7 @@ import ConfigPanel from './components/ConfigPanel.vue'
 import CoveragePanel from './components/CoveragePanel.vue'
 import ExportPanel from './components/ExportPanel.vue'
 import HeaderBar from './components/HeaderBar.vue'
+import HistoryPanel from './components/HistoryPanel.vue'
 import MetricsPanel from './components/MetricsPanel.vue'
 import OutputWorkspace from './components/OutputWorkspace.vue'
 import SourcePanel from './components/SourcePanel.vue'

@@ -24,10 +24,16 @@
       <textarea
         id="raw-content"
         :value="rawContent"
-        rows="9"
+        rows="6"
         placeholder="Paste an OpenAPI spec or describe the system in plain English."
         @input="$emit('update:rawContent', $event.target.value)"
       />
+    </div>
+
+    <div class="panel-actions">
+      <button class="primary-button generate-button" type="button" :disabled="loading || !rawContent.trim()" @click="$emit('generate')">
+        {{ loading ? 'Generating...' : 'Generate tests' }}
+      </button>
     </div>
   </section>
 </template>
@@ -42,9 +48,13 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
 })
 
-const emit = defineEmits(['update:inputType', 'update:rawContent'])
+const emit = defineEmits(['update:inputType', 'update:rawContent', 'generate'])
 
 const inputTypeOptions = ['OpenAPI / Swagger', 'Plain English']
 
