@@ -1,10 +1,10 @@
 # TestGen AI
 
-An AI-powered test case generation skeleton using the Mistral AI API.
+An AI-powered test case generation app using a Vue frontend and the existing Mistral-based Python backend.
 
 ## Setup
 
-1. Create a virtual environment and install dependencies:
+1. Install the Python backend dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -16,14 +16,22 @@ pip install -r requirements.txt
 MISTRAL_API_KEY=your_key_here
 ```
 
-3. Run the Streamlit app:
+3. Start the API server:
 
 ```bash
-streamlit run frontend/app.py
+uvicorn backend.api:app --reload --port 8000
+```
+
+4. Install and run the Vue frontend:
+
+```bash
+cd frontend/web
+npm install
+npm run dev
 ```
 
 ## How it works
 
 - Paste an OpenAPI/Swagger document or a plain-English requirement.
 - The backend parses the input, builds a prompt-ready context, and sends a two-shot request to Mistral.
-- The app displays unit, integration, and edge-case outputs separately.
+- The Vue UI shows unit, integration, and edge-case outputs, coverage estimates, gap suggestions, history, and export actions.

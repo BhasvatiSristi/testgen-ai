@@ -1,2 +1,24 @@
 /.env
 /venv
+
+# Python caches and virtual environments
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Local runtime artifacts
+testgen_history.db
+*.log
+
+# Frontend dependencies and build output
+frontend/web/node_modules/
+frontend/web/dist/
+
+# IDE/editor system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
