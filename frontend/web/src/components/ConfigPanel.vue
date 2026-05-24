@@ -10,9 +10,18 @@
 
     <div class="field-group">
       <label class="field-label" for="framework">Framework</label>
-      <select id="framework" :value="framework" @change="$emit('update:framework', $event.target.value)">
-        <option v-for="option in frameworkOptions" :key="option" :value="option">{{ option }}</option>
-      </select>
+      <div class="framework-switch" role="group" aria-label="Framework options">
+        <button
+          v-for="option in frameworkOptions"
+          :key="option"
+          type="button"
+          class="framework-option"
+          :class="{ active: framework === option }"
+          @click="selectFramework(option)"
+        >
+          {{ option }}
+        </button>
+      </div>
     </div>
 
     <div class="field-group">
@@ -46,10 +55,6 @@
         </button>
       </div>
     </div>
-
-    <p class="helper-text">
-      Medium keeps the response balanced. Deep pushes the model harder on boundaries and odd inputs.
-    </p>
   </section>
 </template>
 
@@ -82,6 +87,10 @@ const depthOptions = [
 ]
 
 const depthLabel = computed(() => depthOptions.find((option) => option.value === props.coverageDepth)?.label || 'Medium')
+
+function selectFramework(option) {
+  emit('update:framework', option)
+}
 
 function toggleTestType(type) {
   const nextTypes = props.testTypes.includes(type)

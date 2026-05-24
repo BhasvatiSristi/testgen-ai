@@ -19,26 +19,7 @@ from backend.parser.plaintext_parser import parse_plaintext
 from backend.storage.history_store import delete_run, get_all_runs, get_run_by_id, save_run
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEMO_DIR = PROJECT_ROOT / "backend" / "demo_examples"
 DEPTH_LABELS = {1: "Basic", 2: "Medium", 3: "Deep"}
-
-DEMO_SPECS = {
-    "Auth API": {
-        "path": DEMO_DIR / "auth_api.yaml",
-        "input_type": "OpenAPI / Swagger",
-        "description": "Authentication flows, token issuance, and protected routes.",
-    },
-    "User CRUD": {
-        "path": DEMO_DIR / "user_crud.yaml",
-        "input_type": "OpenAPI / Swagger",
-        "description": "Create, read, update, and delete lifecycle coverage.",
-    },
-    "Payment flow": {
-        "path": DEMO_DIR / "payment_flow.md",
-        "input_type": "Plain English",
-        "description": "A narrative payment scenario with edge cases.",
-    },
-}
 
 
 class GenerateRequest(BaseModel):
@@ -66,26 +47,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-def _load_demo_content(path: Path) -> str:
-    if not path.exists():
-        return ""
-    return path.read_text(encoding="utf-8").strip()
-
-
-def _demo_payload() -> list[dict[str, str]]:
-    demos: list[dict[str, str]] = []
-    for name, metadata in DEMO_SPECS.items():
-        demos.append(
-            {
-                "name": name,
-                "input_type": metadata["input_type"],
-                "description": metadata["description"],
-                "content": _load_demo_content(metadata["path"]),
-            }
-        )
-    return demos
 
 
 def _build_generation_context(parsed_input: dict, request: GenerateRequest) -> str:
@@ -132,11 +93,6 @@ def _parse_input(request: GenerateRequest) -> dict:
 @app.get("/api/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
-
-
-@app.get("/api/demos")
-def demos() -> dict[str, list[dict[str, str]]]:
-    return {"demos": _demo_payload()}
 
 
 @app.get("/api/history")

@@ -5,7 +5,6 @@ import {
   deleteHistoryRun,
   exportGithub,
   generateTests,
-  getDemos,
   getHistory,
   getHistoryRun,
 } from '../lib/api'
@@ -40,7 +39,6 @@ export function useTestGen() {
     framework: 'pytest',
     testTypes: ['Unit tests', 'Integration tests', 'Edge cases'],
     coverageDepth: 2,
-    selectedDemoName: '',
     repo: '',
     token: '',
     generatedTests: {
@@ -74,32 +72,11 @@ export function useTestGen() {
 
   async function bootstrap() {
     try {
-      const [demos, history] = await Promise.all([getDemos(), getHistory()])
-      state.demos = demos
+      const history = await getHistory()
       state.history = history
-
-      if (!state.rawContent && demos.length > 0) {
-        const firstDemo = demos[0]
-        state.selectedDemoName = firstDemo.name || ''
-        state.inputType = firstDemo.input_type || state.inputType
-        state.rawContent = firstDemo.content || ''
-        state.status = `Loaded demo: ${state.selectedDemoName}.`
-      }
     } catch (error) {
       state.error = error instanceof Error ? error.message : String(error)
     }
-  }
-
-  function setDemoByName(name) {
-    const selected = state.demos.find((demo) => demo.name === name)
-    if (!selected) {
-      return
-    }
-
-    state.selectedDemoName = selected.name || ''
-    state.inputType = selected.input_type || state.inputType
-    state.rawContent = selected.content || ''
-    state.status = `Loaded demo: ${selected.name}.`
   }
 
   async function refreshHistory() {
@@ -213,7 +190,6 @@ export function useTestGen() {
     state,
     metrics,
     bootstrap,
-    setDemoByName,
     generate,
     loadHistoryRun,
     removeHistoryRun,
