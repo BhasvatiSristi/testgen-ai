@@ -1,0 +1,5 @@
+streamlit
+mistralai
+pyyaml
+python-dotenv
+requests
