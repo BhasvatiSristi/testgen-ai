@@ -6,7 +6,12 @@ import json
 import re
 from typing import Any
 
-from mistralai.client import Mistral
+try:
+    from mistralai.client import Mistral
+    HAS_MISTRAL = True
+except Exception:
+    Mistral = None  # type: ignore
+    HAS_MISTRAL = False
 
 from backend.config import MAX_TOKENS, MISTRAL_API_KEY, MODEL
 
@@ -107,6 +112,8 @@ SECTION_LABELS = {
 
 
 def _get_client() -> Mistral:
+    if not HAS_MISTRAL:
+        raise ImportError("mistralai package is not installed in the environment")
     if not MISTRAL_API_KEY:
         raise ValueError("MISTRAL_API_KEY is not configured. Set it in the .env file.")
     return Mistral(api_key=MISTRAL_API_KEY)
@@ -248,6 +255,13 @@ def _generate_section(client: Mistral, framework: str, section: str, analysis_js
 
 def generate_tests(context: str, framework: str = "pytest") -> dict:
     """Run the extraction and generation steps against Mistral."""
+    if not HAS_MISTRAL:
+        placeholder = {
+            "unit": "# Mistral not available in this environment.\n# Set up the MISTRAL_API_KEY secret and install the 'mistralai' package to enable AI-based generation.\n\nimport pytest\n\ndef test_placeholder():\n    \"\"\"Placeholder test: replace with real generated tests after configuring Mistral.\"\"\"\n    assert True\n",
+            "integration": "",
+            "edge_cases": "",
+        }
+        return placeholder
 
     client = _get_client()
     normalized_framework = _normalize_framework(framework)
